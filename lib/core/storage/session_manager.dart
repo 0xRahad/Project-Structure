@@ -1,4 +1,5 @@
 import 'package:logger/logger.dart';
+import 'package:project_structure/core/utils/logging.dart';
 import './model/session_model.dart';
 import 'local_storage.dart';
 
@@ -7,8 +8,6 @@ class SessionManager {
   static final SessionManager _instance = SessionManager._internal();
   factory SessionManager() => _instance;
   SessionManager._internal();
-
-  final Logger _logger = Logger();
   final LocalStorage _localStorage = LocalStorage();
 
   /// Saves user session data locally
@@ -16,9 +15,9 @@ class SessionManager {
     try {
       await _localStorage.setValue("token", model.token);
       await _localStorage.setValue("isLogin", true.toString());
-      _logger.i("User session saved successfully.");
+      Logging.logInfo("User session saved successfully.");
     } catch (error) {
-      _logger.e("Failed to save user session: ${error.toString()}");
+      Logging.logError("Failed to save user session: ${error.toString()}");
     }
   }
 
@@ -27,7 +26,7 @@ class SessionManager {
       final token = await _localStorage.readValue("token");
       return token ?? "";
     } catch (e) {
-      _logger.e("Error fetching token: ${e.toString()}");
+      Logging.logError("Error fetching token: ${e.toString()}");
       return "";
     }
   }
@@ -37,9 +36,9 @@ class SessionManager {
     try {
       await _localStorage.clearValue("token");
       await _localStorage.clearValue("isLogin");
-      _logger.i("User session cleared successfully.");
+      Logging.logInfo("User session cleared successfully.");
     } catch (error) {
-      _logger.e("Failed to clear user session: ${error.toString()}");
+      Logging.logError("Failed to clear user session: ${error.toString()}");
     }
   }
 
@@ -49,7 +48,7 @@ class SessionManager {
       final isLoginStored = await _localStorage.readValue("isLogin") == 'true';
       return isLoginStored;
     } catch (e) {
-      _logger.e("Error checking login status: ${e.toString()}");
+      Logging.logError("Error checking login status: ${e.toString()}");
       return false;
     }
   }

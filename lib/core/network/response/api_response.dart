@@ -31,6 +31,15 @@ class ApiResponse<T> {
     }
   }
 
+  // Getter to check if the status is loading
+  bool get isLoading => status == Status.loading;
+
+  // Getter to check if the status is success
+  bool get isSuccess => status == Status.success;
+
+  // Getter to check if the status is error
+  bool get isError => status == Status.error;
+
   @override
   String toString() {
     return 'ApiResponse{status: $status, data: $data, message: $message}';
